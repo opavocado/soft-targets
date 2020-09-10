@@ -7,21 +7,49 @@
 
 #include "Arduino.h"
 
+enum TargetState {Off, StandBy, Hit};
+enum LedColor {Red, Green, None};
 
 class Target
 {
   public:
-    Target(int piezoPin, int ledRedPin, int ledGreenPin);
-    enum TargetState {Off, StandBy, Ready};
+    Target(int piezoPin, int ledRedPin, int ledGreenPin, int hitThreshold);
     void update(unsigned long currentTime);
+
+    void enable();
+    void disable();
+    
+    bool wasHit();
+
+    // Get/Set
     void setState(TargetState state);
+    TargetState getState();
+
+    void setHitThreshold(int hitThreshold);
+    int getHitThreshold();
 
   private:
     int piezoPin;
     int ledRedPin;
     int ledGreenPin;
+    int lastReadValue;
+    int hitThreshold;
+    bool hitRegistered;
+    unsigned long lastReadValueTime;
     unsigned long lastTransitionTime;
     TargetState currentState;
+    const int defaultHitTime = 250; // 1/4 of a sec of showing green light before turning off
+
+    void transitionToOffState();
+    void handleOffState();
+    
+    void transitionToStandByState();
+    void handleStandByState();
+
+    void transitionToHitState();
+    void handleHitState();
+
+    void setLedColor(LedColor color);
 };
 
 #endif
