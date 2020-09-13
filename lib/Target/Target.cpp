@@ -18,7 +18,7 @@ Target::Target(int piezoPin, int ledRedPin, int ledGreenPin, int hitThreshold)
     hitRegistered = false;
     lastReadValueTime = 0;
     lastTransitionTime = 0;
-    currentState = Off;
+    transitionToOffState();
 }
 
 void Target::update(unsigned long currentTime)
@@ -46,6 +46,7 @@ void Target::update(unsigned long currentTime)
 
 // Used externally to set the target to Stand By
 void Target::enable() {
+    Serial.println("Target enabled!"); // DEBUG
     transitionToStandByState();
 }
 
@@ -90,6 +91,8 @@ void Target::handleOffState() {
 // StandBy: Waiting to be hit
 void Target::handleStandByState() {
     // Check if target was hit
+    Serial.print("handleStandByState: "); // DEBUG
+    Serial.println(lastReadValue);
     if(lastReadValue >= hitThreshold) {
         hitRegistered = true;
         transitionToHitState();
@@ -113,6 +116,9 @@ void Target::transitionToOffState() {
     // Turn off LEDs
     setLedColor(LedColor::None);
 
+    // Update State
+    currentState = TargetState::Off;
+
 }
 
 void Target::transitionToStandByState() {
@@ -121,6 +127,9 @@ void Target::transitionToStandByState() {
 
     // Turn on Green Light
     setLedColor(LedColor::Red);
+
+    // Update State
+    currentState = TargetState::StandBy;
 }
 
 void Target::transitionToHitState() {
@@ -129,6 +138,9 @@ void Target::transitionToHitState() {
 
     // Turn on Green Light
     setLedColor(LedColor::Green);
+
+    // Update State
+    currentState = TargetState::Hit;
 }
 
 
@@ -148,4 +160,8 @@ void Target::setHitThreshold(int hitThreshold) {
 
 int Target::getHitThreshold() {
     return hitThreshold;
+}
+
+int Target::getLastReadValue() {
+    return lastReadValue;
 }

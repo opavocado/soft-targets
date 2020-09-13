@@ -53,12 +53,26 @@ void setup() {
 void loop() {
   currentTime = millis();
   // Read Sensors & Update Targets
+  //String readings = ""; // DEBUG
   for(int i = 0; i < CONNECTED_TARGETS; i++) {
     targets[i]->update(currentTime);
+    
+    // DEBUG BLOCK //////////////////////////////////
+    /*
+    readings.concat(i);
+    readings.concat(" ");
+    readings.concat(targets[i]->getLastReadValue());
+    readings.concat(" - ");
+    */
+    ////////////////////////////////////////////////
   }
+  //Serial.println(readings);
   
   // If the Enabled Target was hit, pick a new one
+  // Serial.print("Enabled target: "); DEBUG
+  // Serial.println(enabledTargetIndex); DEBUG
   if(targets[enabledTargetIndex]->wasHit()) {
+    //Serial.println("HIT!!!!!!"); DEBUG
     int newTargetIndex = enabledTargetIndex;
     
     // Randomly pick a new target that is different from the one that was hit
@@ -70,6 +84,8 @@ void loop() {
   }
 
   // Update All Targets (send timer, and let them calculate whether they should transition from Hit to Off)
+
+  //delay(100); // DEBUG slowdown
 }
 
 void turnOffAllLeds() {

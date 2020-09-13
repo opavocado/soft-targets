@@ -24,6 +24,8 @@ class Target
     // Get/Set
     void setState(TargetState state);
     TargetState getState();
+    
+    int getLastReadValue();
 
     void setHitThreshold(int hitThreshold);
     int getHitThreshold();
@@ -38,7 +40,7 @@ class Target
     unsigned long lastReadValueTime;
     unsigned long lastTransitionTime;
     TargetState currentState;
-    const int defaultHitTime = 250; // 1/4 of a sec of showing green light before turning off
+    const unsigned long defaultHitTime = 250; // 1/4 of a sec of showing green light before turning off
 
     void transitionToOffState();
     void handleOffState();
