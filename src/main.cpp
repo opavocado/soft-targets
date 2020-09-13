@@ -8,7 +8,7 @@
 #define PIEZO_2_PIN A1
 #define PIEZO_3_PIN A2
 
-#define DEFAULT_HIT_THRESHOLD 30
+#define DEFAULT_HIT_THRESHOLD 200
 
 
 // LEDs

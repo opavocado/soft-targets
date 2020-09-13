@@ -46,7 +46,7 @@ void Target::update(unsigned long currentTime)
 
 // Used externally to set the target to Stand By
 void Target::enable() {
-    Serial.println("Target enabled!"); // DEBUG
+    //Serial.println("Target enabled!"); // DEBUG
     transitionToStandByState();
 }
 
@@ -91,8 +91,8 @@ void Target::handleOffState() {
 // StandBy: Waiting to be hit
 void Target::handleStandByState() {
     // Check if target was hit
-    Serial.print("handleStandByState: "); // DEBUG
-    Serial.println(lastReadValue);
+    // Serial.print("handleStandByState: "); // DEBUG
+    // Serial.println(lastReadValue);
     if(lastReadValue >= hitThreshold) {
         hitRegistered = true;
         transitionToHitState();
@@ -103,7 +103,7 @@ void Target::handleStandByState() {
 void Target::handleHitState() {
     hitRegistered = false;
     // Check for timer
-    if(lastTransitionTime - lastReadValueTime > defaultHitTime) {
+    if(lastReadValueTime - lastTransitionTime  > defaultHitTime) {
         transitionToOffState();
     }
 }
@@ -111,7 +111,7 @@ void Target::handleHitState() {
 // State Transitions //
 void Target::transitionToOffState() {
     // Save transition state
-    lastTransitionTime = lastReadValue;
+    lastTransitionTime = lastReadValueTime;
 
     // Turn off LEDs
     setLedColor(LedColor::None);
@@ -123,7 +123,7 @@ void Target::transitionToOffState() {
 
 void Target::transitionToStandByState() {
     // Save transition state
-    lastTransitionTime = lastReadValue;
+    lastTransitionTime = lastReadValueTime;
 
     // Turn on Green Light
     setLedColor(LedColor::Red);
@@ -134,7 +134,7 @@ void Target::transitionToStandByState() {
 
 void Target::transitionToHitState() {
     // Save transition state
-    lastTransitionTime = lastReadValue;
+    lastTransitionTime = lastReadValueTime;
 
     // Turn on Green Light
     setLedColor(LedColor::Green);
