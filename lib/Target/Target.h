@@ -40,7 +40,7 @@ class Target
     unsigned long lastReadValueTime;
     unsigned long lastTransitionTime;
     TargetState currentState;
-    const unsigned long defaultHitTime = 250; // 1/4 of a sec of showing green light before turning off
+    const unsigned long defaultHitTime = 100; // 1/10 of a sec of showing green light before turning off
 
     void transitionToOffState();
     void handleOffState();
