@@ -1,3 +1,6 @@
+See arget Practice - General.pdf for the project's doc
+
+
 To Do
 -----
 
